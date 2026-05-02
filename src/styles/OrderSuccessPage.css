@@ -1,0 +1,108 @@
+.success-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.success-card {
+  background: white;
+  border-radius: 15px;
+  padding: 40px;
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.success-icon {
+  font-size: 70px;
+  margin-bottom: 15px;
+}
+
+.success-card h1 {
+  color: #2e7d32;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.success-msg {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.order-details {
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  font-size: 15px;
+  color: #555;
+}
+
+.detail-row strong {
+  color: #2e7d32;
+}
+
+.info-message {
+  background-color: #fff3e0;
+  border-radius: 10px;
+  padding: 18px;
+  margin: 20px 0;
+  text-align: left;
+  border-left: 4px solid #ff9800;
+}
+
+.info-message h3 {
+  color: #e65100;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.info-message p {
+  font-size: 13px;
+  color: #555;
+  margin: 6px 0;
+}
+
+.contact-info {
+  margin: 20px 0;
+}
+
+.contact-info p {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 5px;
+}
+
+.phone-link {
+  font-size: 20px;
+  color: #2e7d32;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.continue-btn {
+  background-color: #2e7d32;
+  color: white;
+  border: none;
+  padding: 14px 30px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.continue-btn:hover {
+  background-color: #1b5e20;
+}
