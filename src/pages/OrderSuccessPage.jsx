@@ -12,16 +12,34 @@ function OrderSuccessPage() {
   const orderId = location.state?.orderId;
 
   useEffect(() => {
-    if (!orderData || !orderId) {
-      navigate('/');
-      return;
+    // Only clear cart if order was successful
+    if (orderData && orderId) {
+      clearCart();
     }
-    // Clear cart after successful order
-    clearCart();
   }, []);
 
+  // Show fallback if no order data (instead of redirecting)
   if (!orderData || !orderId) {
-    return null;
+    return (
+      <div className="order-success-page">
+        <div className="success-container">
+          <div className="success-icon" style={{opacity: 0.5}}>
+            <svg viewBox="0 0 80 80" fill="none">
+              <circle cx="40" cy="40" r="38" fill="#9ca3af" />
+              <path d="M40 25 L40 45" stroke="white" strokeWidth="5" strokeLinecap="round" />
+              <circle cx="40" cy="55" r="3" fill="white" />
+            </svg>
+          </div>
+          <h1 className="success-title">Order Information Not Found</h1>
+          <p style={{color: '#6b7280', marginBottom: '20px'}}>
+            It looks like you came here directly. Please place a new order.
+          </p>
+          <button onClick={() => navigate('/')} className="new-order-btn">
+            🏠 Go to Home
+          </button>
+        </div>
+      </div>
+    );
   }
 
   // Generate WhatsApp message with order details (Tamil + English)
@@ -125,7 +143,7 @@ Thank you! Your order will be delivered soon.`;
 
         <div className="order-actions">
           <button onClick={handleNewOrder} className="new-order-btn">
-            🛒 மீண்டும் ஆர்டர் செய்/New Order
+            🛒 மீண்டும் ஆர்டர் செய் / New Order
           </button>
         </div>
 
