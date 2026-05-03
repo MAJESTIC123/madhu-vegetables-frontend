@@ -4,6 +4,7 @@ import WelcomePage from './pages/WelcomePage';
 import ShopPage from './pages/ShopPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrderSuccessPage from './pages/OrderSuccessPage';
+import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/checkout" element={<CheckoutPage />} />
           <Route path="/order-success" element={<OrderSuccessPage />} />
         </Routes>
+        <FloatingWhatsApp />
       </BrowserRouter>
     </AppProvider>
   );

@@ -1,108 +1,235 @@
-.success-page {
+.order-success-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+  background: linear-gradient(135deg, #d4f4dd 0%, #fef3c7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.success-card {
+.success-container {
   background: white;
-  border-radius: 15px;
-  padding: 40px;
-  max-width: 500px;
+  border-radius: 20px;
+  padding: 40px 30px;
+  max-width: 550px;
   width: 100%;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
 }
 
 .success-icon {
-  font-size: 70px;
-  margin-bottom: 15px;
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 20px;
+  animation: bounceIn 0.6s ease-out;
 }
 
-.success-card h1 {
-  color: #2e7d32;
-  font-size: 26px;
-  margin-bottom: 10px;
+@keyframes bounceIn {
+  0% { transform: scale(0); }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); }
 }
 
-.success-msg {
-  color: #666;
-  margin-bottom: 25px;
+.success-title {
+  color: #166534;
+  font-size: 28px;
+  margin: 10px 0 5px;
+  font-weight: 700;
 }
 
-.order-details {
-  background-color: #f9f9f9;
-  border-radius: 10px;
+.success-subtitle {
+  color: #15803d;
+  font-size: 22px;
+  margin: 0 0 25px;
+  font-weight: 600;
+}
+
+.order-id-box {
+  background: linear-gradient(135deg, #166534, #22c55e);
+  color: white;
   padding: 20px;
+  border-radius: 12px;
   margin: 20px 0;
 }
 
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px 0;
+.order-id-label {
+  font-size: 14px;
+  opacity: 0.9;
+  margin: 0 0 8px;
+}
+
+.order-id {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0;
+}
+
+.success-message {
+  margin: 25px 0;
+}
+
+.message-tamil {
+  color: #166534;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.message-english {
+  color: #4b5563;
   font-size: 15px;
-  color: #555;
+  margin: 0;
 }
 
-.detail-row strong {
-  color: #2e7d32;
-}
-
-.info-message {
-  background-color: #fff3e0;
-  border-radius: 10px;
-  padding: 18px;
-  margin: 20px 0;
+.whatsapp-notice {
+  background: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 25px 0;
+  display: flex;
+  gap: 12px;
   text-align: left;
-  border-left: 4px solid #ff9800;
 }
 
-.info-message h3 {
-  color: #e65100;
-  font-size: 16px;
-  margin-bottom: 8px;
+.notice-icon {
+  font-size: 28px;
+  flex-shrink: 0;
 }
 
-.info-message p {
+.notice-content {
+  flex: 1;
+}
+
+.notice-title-tamil {
+  color: #92400e;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.notice-text {
+  color: #78350f;
+  font-size: 15px;
+  margin: 0 0 6px;
+  line-height: 1.4;
+}
+
+.notice-text-en {
+  color: #78350f;
   font-size: 13px;
-  color: #555;
-  margin: 6px 0;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.whatsapp-confirm-btn {
+  background: #25D366;
+  color: white;
+  border: none;
+  padding: 18px 25px;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 12px;
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+  margin: 15px 0 10px;
+}
+
+.whatsapp-confirm-btn:hover {
+  background: #128C7E;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5);
+}
+
+.whatsapp-confirm-btn:active {
+  transform: translateY(0);
+}
+
+.confirm-help-text {
+  color: #6b7280;
+  font-size: 13px;
+  margin: 10px 0 25px;
+  line-height: 1.5;
+}
+
+.order-actions {
+  margin: 25px 0;
+}
+
+.new-order-btn {
+  background: white;
+  color: #166534;
+  border: 2px solid #166534;
+  padding: 14px 25px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.2s;
+}
+
+.new-order-btn:hover {
+  background: #166534;
+  color: white;
 }
 
 .contact-info {
-  margin: 20px 0;
+  margin-top: 30px;
+  padding-top: 25px;
+  border-top: 2px dashed #e5e7eb;
+  color: #4b5563;
 }
 
 .contact-info p {
-  font-size: 13px;
-  color: #888;
-  margin-bottom: 5px;
+  margin: 5px 0;
+  font-size: 14px;
 }
 
-.phone-link {
+.contact-phone {
+  color: #166534;
+  font-weight: 700;
   font-size: 20px;
-  color: #2e7d32;
   text-decoration: none;
-  font-weight: bold;
+  display: block;
+  margin: 8px 0;
 }
 
-.continue-btn {
-  background-color: #2e7d32;
-  color: white;
-  border: none;
-  padding: 14px 30px;
-  font-size: 15px;
-  font-weight: bold;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 15px;
-  width: 100%;
+.contact-phone:hover {
+  color: #22c55e;
 }
 
-.continue-btn:hover {
-  background-color: #1b5e20;
+.contact-time {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+@media (max-width: 480px) {
+  .success-container {
+    padding: 30px 20px;
+  }
+  
+  .success-title {
+    font-size: 24px;
+  }
+  
+  .success-subtitle {
+    font-size: 18px;
+  }
+  
+  .order-id {
+    font-size: 26px;
+  }
+  
+  .whatsapp-confirm-btn {
+    font-size: 15px;
+    padding: 16px 20px;
+  }
 }
