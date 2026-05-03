@@ -1,25 +1,27 @@
-import { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import '../styles/OrderSuccessPage.css';
 
 function OrderSuccessPage() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { customer, clearCart, clearCustomer } = useApp();
-  
-  const orderData = location.state?.orderData;
-  const orderId = location.state?.orderId;
+  const { clearCustomer } = useApp();
+  const [orderInfo, setOrderInfo] = useState(null);
 
   useEffect(() => {
-    // Only clear cart if order was successful
-    if (orderData && orderId) {
-      clearCart();
+    // Read order from sessionStorage (saved by CheckoutPage)
+    const lastOrder = sessionStorage.getItem('lastOrder');
+    if (lastOrder) {
+      try {
+        setOrderInfo(JSON.parse(lastOrder));
+      } catch (e) {
+        console.error('Failed to parse order:', e);
+      }
     }
   }, []);
 
   // Show fallback if no order data (instead of redirecting)
-  if (!orderData || !orderId) {
+  if (!orderInfo) {
     return (
       <div className="order-success-page">
         <div className="success-container">
@@ -32,7 +34,7 @@ function OrderSuccessPage() {
           </div>
           <h1 className="success-title">Order Information Not Found</h1>
           <p style={{color: '#6b7280', marginBottom: '20px'}}>
-            It looks like you came here directly. Please place a new order.
+            Please place a new order.
           </p>
           <button onClick={() => navigate('/')} className="new-order-btn">
             🏠 Go to Home
@@ -42,11 +44,15 @@ function OrderSuccessPage() {
     );
   }
 
+  const { orderId, totalAmount, customer, items } = orderInfo;
+  const subtotal = items.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0);
+  const deliveryCharge = 30;
+
   // Generate WhatsApp message with order details (Tamil + English)
   const generateWhatsAppMessage = () => {
-    const itemsList = orderData.items.map((item, idx) => {
-      const unit = item.unitType === 'kg' ? 'kg' : item.unitType === 'piece' ? 'pcs' : 'bundle';
-      return `${idx + 1}. ${item.name} - ${item.quantity} ${unit} × ₹${item.price} = ₹${(item.quantity * item.price).toFixed(2)}`;
+    const itemsList = items.map((item, idx) => {
+      const unit = item.unit === 'kg' ? 'kg' : item.unit === 'piece' ? 'pcs' : 'bundle';
+      return `${idx + 1}. ${item.name} - ${item.quantity} ${unit} × ₹${item.pricePerUnit} = ₹${(item.quantity * item.pricePerUnit).toFixed(2)}`;
     }).join('\n');
 
     const message = `🥬 *MADHU VEGETABLES - புதிய ஆர்டர்/NEW ORDER* 🥬
@@ -55,7 +61,7 @@ function OrderSuccessPage() {
 
 👤 *வாடிக்கையாளர் விவரங்கள்/Customer Details:*
 பெயர்/Name: ${customer.name}
-மொபைல்/Mobile: ${customer.mobile}
+மொபைல்/Mobile: ${customer.phone}
 
 📍 *டெலிவரி முகவரி/Delivery Address:*
 ${customer.address}
@@ -65,9 +71,9 @@ ${customer.landmark ? `Landmark: ${customer.landmark}\n` : ''}Pincode: ${custome
 ${itemsList}
 
 💰 *Bill Summary:*
-Subtotal: ₹${orderData.subtotal.toFixed(2)}
-Delivery Charge: ₹${orderData.deliveryCharge.toFixed(2)}
-*மொத்தம்/Total: ₹${orderData.total.toFixed(2)}*
+Subtotal: ₹${subtotal.toFixed(2)}
+Delivery Charge: ₹${deliveryCharge.toFixed(2)}
+*மொத்தம்/Total: ₹${totalAmount.toFixed(2)}*
 
 💵 *Payment:* Cash on Delivery (COD)
 
@@ -85,6 +91,7 @@ Thank you! Your order will be delivered soon.`;
   };
 
   const handleNewOrder = () => {
+    sessionStorage.removeItem('lastOrder');
     clearCustomer();
     navigate('/');
   };
