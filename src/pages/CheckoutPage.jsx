@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Header from '../components/Header';
-import api from '../api';
+import {placeOrder} from '../api';
 import '../styles/CheckoutPage.css';
 
 const MIN_ORDER = 200;
@@ -59,7 +59,7 @@ function CheckoutPage() {
     setError('');
 
     try {
-      const response = await api.post('/orders', {
+      const response = await placeOrder({
         customer: {
           name: customer.name,
           mobile: customer.mobile,
@@ -83,7 +83,7 @@ function CheckoutPage() {
       // Pass order data to success page BEFORE clearing cart
       navigate('/order-success', { 
         state: { 
-          orderId: response.data.orderId,
+          orderId: response.orderId,
           orderData: {
             items: cart,
             subtotal: subtotal,
