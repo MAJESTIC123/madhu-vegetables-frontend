@@ -53,3 +53,31 @@
     display: none;
   }
 }
+/* Reviews Link */
+.reviews-link {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-right: 8px;
+}
+
+.reviews-link:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 480px) {
+  .reviews-link {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

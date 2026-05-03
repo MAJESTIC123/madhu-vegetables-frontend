@@ -11,3 +11,17 @@ export const placeOrder = async (orderData) => {
   const response = await axios.post(`${API_URL}/orders`, orderData);
   return response.data;
 };
+export const submitFeedback = async (feedbackData) => {
+  const response = await axios.post(`${API_URL}/feedback`, feedbackData);
+  return response.data;
+};
+
+export const fetchReviews = async () => {
+  const response = await axios.get(`${API_URL}/feedback`);
+  return response.data;
+};
+
+export const checkFeedback = async (orderId) => {
+  const response = await axios.get(`${API_URL}/feedback/check/${orderId}`);
+  return response.data;
+};

@@ -1,26 +1,47 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import { submitFeedback, checkFeedback } from '../api';
 import '../styles/OrderSuccessPage.css';
 
 function OrderSuccessPage() {
   const navigate = useNavigate();
   const app = useApp();
   const [orderInfo, setOrderInfo] = useState(null);
+  
+  // Feedback state
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [comment, setComment] = useState('');
+  const [submittingFeedback, setSubmittingFeedback] = useState(false);
+  const [feedbackSubmitted, setFeedbackSubmitted] = useState(false);
+  const [feedbackError, setFeedbackError] = useState('');
 
   useEffect(() => {
     // Read order from sessionStorage (saved by CheckoutPage)
     const lastOrder = sessionStorage.getItem('lastOrder');
     if (lastOrder) {
       try {
-        setOrderInfo(JSON.parse(lastOrder));
+        const order = JSON.parse(lastOrder);
+        setOrderInfo(order);
+        
+        // Check if feedback already submitted for this order
+        if (order.orderId) {
+          checkFeedback(order.orderId)
+            .then(res => {
+              if (res.hasFeedback) {
+                setFeedbackSubmitted(true);
+              }
+            })
+            .catch(err => console.log('Could not check feedback:', err));
+        }
       } catch (e) {
         console.error('Failed to parse order:', e);
       }
     }
   }, []);
 
-  // Show fallback if no order data (instead of redirecting)
+  // Show fallback if no order data
   if (!orderInfo) {
     return (
       <div className="order-success-page">
@@ -48,7 +69,7 @@ function OrderSuccessPage() {
   const subtotal = items.reduce((sum, item) => sum + (item.pricePerUnit * item.quantity), 0);
   const deliveryCharge = 30;
 
-  // Generate WhatsApp message with order details (Tamil + English)
+  // WhatsApp message
   const generateWhatsAppMessage = () => {
     const itemsList = items.map((item, idx) => {
       const unit = item.unit === 'kg' ? 'kg' : item.unit === 'piece' ? 'pcs' : 'bundle';
@@ -84,22 +105,46 @@ Thank you! Your order will be delivered soon.`;
   };
 
   const handleWhatsAppConfirm = () => {
-    const whatsappNumber = '919976988285'; // 91 = India country code
+    const whatsappNumber = '919976988285';
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   };
 
-const handleNewOrder = () => {
+  const handleNewOrder = () => {
     sessionStorage.removeItem('lastOrder');
-    // Try to clear customer if function exists
     if (app.clearCustomer) {
       app.clearCustomer();
     } else if (app.setCustomer) {
       app.setCustomer(null);
     }
     navigate('/');
-};
+  };
+
+  // Submit feedback
+  const handleSubmitFeedback = async () => {
+    if (rating === 0) {
+      setFeedbackError('Please select a star rating');
+      return;
+    }
+
+    setSubmittingFeedback(true);
+    setFeedbackError('');
+
+    try {
+      await submitFeedback({
+        orderId,
+        customerName: customer.name,
+        customerPhone: customer.phone,
+        rating,
+        comment: comment.trim()
+      });
+      setFeedbackSubmitted(true);
+    } catch (err) {
+      setFeedbackError(err.response?.data?.error || 'Failed to submit feedback. Try again.');
+      setSubmittingFeedback(false);
+    }
+  };
 
   return (
     <div className="order-success-page">
@@ -152,6 +197,74 @@ const handleNewOrder = () => {
           மேலே உள்ள பட்டனை அழுத்தி உங்கள் ஆர்டர் விவரங்களை எங்களுக்கு அனுப்பவும்.<br/>
           Click the button above to send your order details to us.
         </p>
+
+        {/* FEEDBACK SECTION */}
+        <div className="feedback-section">
+          {feedbackSubmitted ? (
+            <div className="feedback-thanks">
+              <div className="feedback-thanks-icon">🌟</div>
+              <h3>நன்றி! / Thank You!</h3>
+              <p>உங்கள் கருத்துக்கு நன்றி!</p>
+              <p className="feedback-thanks-en">Your feedback has been submitted!</p>
+            </div>
+          ) : (
+            <div className="feedback-form">
+              <h3 className="feedback-title">⭐ எங்களை மதிப்பிடுங்கள் / Rate Us</h3>
+              <p className="feedback-subtitle">
+                உங்கள் கருத்து / Your feedback helps us improve!
+              </p>
+              
+              <div className="star-rating">
+                {[1, 2, 3, 4, 5].map(star => (
+                  <button
+                    key={star}
+                    type="button"
+                    className={`star-btn ${star <= (hoverRating || rating) ? 'active' : ''}`}
+                    onClick={() => setRating(star)}
+                    onMouseEnter={() => setHoverRating(star)}
+                    onMouseLeave={() => setHoverRating(0)}
+                    aria-label={`${star} stars`}
+                  >
+                    ★
+                  </button>
+                ))}
+              </div>
+              
+              {rating > 0 && (
+                <p className="rating-text">
+                  {rating === 5 ? '🤩 Excellent!' : 
+                   rating === 4 ? '😊 Good' : 
+                   rating === 3 ? '🙂 Okay' : 
+                   rating === 2 ? '😐 Could be better' : 
+                   '😞 Disappointed'}
+                </p>
+              )}
+              
+              <textarea
+                className="feedback-textarea"
+                placeholder="உங்கள் கருத்துகளை எழுதுங்கள் (optional) / Share your thoughts..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                rows="3"
+                maxLength="500"
+              />
+              <p className="char-count">{comment.length}/500</p>
+              
+              {feedbackError && (
+                <p className="feedback-error">⚠️ {feedbackError}</p>
+              )}
+              
+              <button
+                onClick={handleSubmitFeedback}
+                className="submit-feedback-btn"
+                disabled={submittingFeedback || rating === 0}
+              >
+                {submittingFeedback ? '⏳ Submitting...' : '✅ Submit Feedback'}
+              </button>
+            </div>
+          )}
+        </div>
+        {/* END FEEDBACK SECTION */}
 
         <div className="order-actions">
           <button onClick={handleNewOrder} className="new-order-btn">

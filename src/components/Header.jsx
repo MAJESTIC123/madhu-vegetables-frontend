@@ -13,6 +13,9 @@ const Header = () => {
       {customer && (
         <div className="header-right">
           <span className="customer-name">Hi, {customer.name.split(' ')[0]}!</span>
+          <Link to="/reviews" className="reviews-link">
+                ⭐ Reviews
+              </Link>
           <Link to="/checkout" className="cart-link">
             🛒 Cart ({cartItemsCount})
           </Link>
