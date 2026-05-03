@@ -105,7 +105,7 @@ Thank you! Your order will be delivered soon.`;
   };
 
   const handleWhatsAppConfirm = () => {
-    const whatsappNumber = '919976988285';
+    const whatsappNumber = '919486725221';
     const message = generateWhatsAppMessage();
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
@@ -274,7 +274,7 @@ Thank you! Your order will be delivered soon.`;
 
         <div className="contact-info">
           <p>📞 உதவிக்கு / For help:</p>
-          <a href="tel:9976988285" className="contact-phone">+91 99769 88285</a>
+          <a href="tel:9486725221" className="contact-phone">+91 94867 25221</a>
           <p className="contact-time">🕕 ஆர்டர் நேரம் / Order Time: காலை 6:00 - இரவு 9:00</p>
         </div>
       </div>

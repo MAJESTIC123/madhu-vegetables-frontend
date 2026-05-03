@@ -5,7 +5,7 @@ function FloatingWhatsApp() {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleClick = () => {
-    const whatsappNumber = '919976988285';
+    const whatsappNumber = '919486725221'; // Replace with your WhatsApp number
     const message = encodeURIComponent('வணக்கம்! / Hello! Madhu Vegetables-ல் இருந்து ஆர்டர் பற்றி கேட்க விரும்புகிறேன். / I have a question about ordering from Madhu Vegetables.');
     const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
