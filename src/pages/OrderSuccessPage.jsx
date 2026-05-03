@@ -5,7 +5,7 @@ import '../styles/OrderSuccessPage.css';
 
 function OrderSuccessPage() {
   const navigate = useNavigate();
-  const { clearCustomer } = useApp();
+  const app = useApp();
   const [orderInfo, setOrderInfo] = useState(null);
 
   useEffect(() => {
@@ -90,11 +90,16 @@ Thank you! Your order will be delivered soon.`;
     window.open(whatsappUrl, '_blank');
   };
 
-  const handleNewOrder = () => {
+const handleNewOrder = () => {
     sessionStorage.removeItem('lastOrder');
-    clearCustomer();
+    // Try to clear customer if function exists
+    if (app.clearCustomer) {
+      app.clearCustomer();
+    } else if (app.setCustomer) {
+      app.setCustomer(null);
+    }
     navigate('/');
-  };
+};
 
   return (
     <div className="order-success-page">
